@@ -10,14 +10,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
+
 import govender.kevashan.com.bakingapp.R;
 import govender.kevashan.com.bakingapp.model.Recipe;
 import govender.kevashan.com.bakingapp.viewrecipes.adapter.IngredientsAdapter;
+import govender.kevashan.com.bakingapp.viewrecipes.adapter.StepsAdapter;
 
 public class RecipeDetailFragment extends Fragment {
 
     public static final String ARG_ITEM_ID = "item_id";
     private Recipe recipe;
+
+    private static final DefaultBandwidthMeter BANDWIDTH_METER = new DefaultBandwidthMeter();
 
     public RecipeDetailFragment() {
     }
@@ -46,10 +53,16 @@ public class RecipeDetailFragment extends Fragment {
 
         RecyclerView ingredientRv = rootView.findViewById(R.id.ingredients_rv);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         ingredientRv.setLayoutManager(layoutManager);
 
         IngredientsAdapter adapter = new IngredientsAdapter(recipe.getIngredients());
         ingredientRv.setAdapter(adapter);
+
+        RecyclerView stepsRv = rootView.findViewById(R.id.steps_rv);
+        stepsRv.setLayoutManager(linearLayoutManager);
+        StepsAdapter stepsAdapter = new StepsAdapter(recipe.getSteps(), getContext());
+        stepsRv.setAdapter(stepsAdapter);
 
         return rootView;
     }

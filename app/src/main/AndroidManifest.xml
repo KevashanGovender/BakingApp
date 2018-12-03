@@ -32,6 +32,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="govender.kevashan.com.bakingapp.viewrecipes.view.RecipeListActivity" />
         </activity>
+        <activity android:name=".viewrecipes.view.RecipeStepActivity" />
     </application>
 
 </manifest>

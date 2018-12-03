@@ -12,7 +12,7 @@ import java.util.List;
 import govender.kevashan.com.bakingapp.R;
 import govender.kevashan.com.bakingapp.model.Ingredient;
 
-public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.RecipeViewholder> {
+public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.RecipeViewHolder> {
 
     private List<Ingredient> ingredients;
 
@@ -22,16 +22,16 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
 
     @NonNull
     @Override
-    public RecipeViewholder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public RecipeViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.ingredients_item,
                 viewGroup, false);
-        return new RecipeViewholder(itemView);
+        return new RecipeViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecipeViewholder recipeViewholder, int i) {
-        recipeViewholder.ingredientName.setText(ingredients.get(i).getIngredient());
-        recipeViewholder.measureTv.setText(ingredients.get(i).getMeasure() + " " + ingredients.get(i).getQuantity());
+    public void onBindViewHolder(@NonNull RecipeViewHolder recipeViewHolder, int i) {
+        recipeViewHolder.ingredientName.setText(ingredients.get(i).getIngredient());
+        recipeViewHolder.measureTv.setText(ingredients.get(i).getMeasure() + " " + ingredients.get(i).getQuantity());
     }
 
     @Override
@@ -39,12 +39,12 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
         return ingredients.size();
     }
 
-    class RecipeViewholder extends RecyclerView.ViewHolder{
+    class RecipeViewHolder extends RecyclerView.ViewHolder{
 
         TextView ingredientName;
         TextView measureTv;
 
-        public RecipeViewholder(@NonNull View itemView) {
+        public RecipeViewHolder(@NonNull View itemView) {
             super(itemView);
             ingredientName = itemView.findViewById(R.id.ingredient_name_tv);
             measureTv = itemView.findViewById(R.id.measure_tv);
