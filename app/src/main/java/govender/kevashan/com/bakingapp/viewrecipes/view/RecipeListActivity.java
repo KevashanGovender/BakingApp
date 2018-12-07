@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import govender.kevashan.com.bakingapp.R;
 
-import govender.kevashan.com.bakingapp.Util;
+import govender.kevashan.com.bakingapp.viewrecipes.widget.Util;
 import govender.kevashan.com.bakingapp.model.Recipe;
 import govender.kevashan.com.bakingapp.viewrecipes.database.RecipeDb;
 import govender.kevashan.com.bakingapp.viewrecipes.repo.RecipeRepo;
