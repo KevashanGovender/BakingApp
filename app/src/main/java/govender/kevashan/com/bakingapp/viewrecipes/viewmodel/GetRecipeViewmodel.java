@@ -1,7 +1,6 @@
 package govender.kevashan.com.bakingapp.viewrecipes.viewmodel;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import govender.kevashan.com.bakingapp.model.Recipe;
 import govender.kevashan.com.bakingapp.viewrecipes.repo.IRecipeRepo;
@@ -22,6 +21,10 @@ public class GetRecipeViewmodel implements IGetRecipes {
 
     public void getRecipes(){
         taskFactory.getRecipesTask(recipeRepo, this).execute();
+    }
+
+    public void insertRecipe(Recipe recipe){
+        taskFactory.insertRecipeTask(recipeRepo, recipe).execute();
     }
 
 

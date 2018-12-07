@@ -33,6 +33,21 @@
                 android:value="govender.kevashan.com.bakingapp.viewrecipes.view.RecipeListActivity" />
         </activity>
         <activity android:name=".viewrecipes.view.RecipeStepActivity" />
+
+        <receiver android:name=".RecipeWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/recipe_widget_info" />
+        </receiver>
+
+        <service
+            android:name=".RecipeWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
     </application>
 
 </manifest>

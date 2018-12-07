@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="16dp"
-    android:layout_marginTop="16dp"
+    android:layout_marginBottom="8dp"
+    android:layout_marginTop="8dp"
     android:background="@drawable/border">
 
     <TextView
@@ -37,7 +37,7 @@
         android:layout_height="2dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:background="@color/colorPrimaryDark"
+        android:background="@android:color/background_dark"
         app:layout_constraintBottom_toTopOf="@+id/measure_tv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

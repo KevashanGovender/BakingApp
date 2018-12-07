@@ -6,34 +6,20 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.Surface;
 import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.Format;
-import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.audio.AudioRendererEventListener;
-import com.google.android.exoplayer2.decoder.DecoderCounters;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.dash.DashChunkSource;
-import com.google.android.exoplayer2.source.dash.DashMediaSource;
-import com.google.android.exoplayer2.source.dash.DefaultDashChunkSource;
-import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
-import com.google.android.exoplayer2.video.VideoRendererEventListener;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,7 +33,6 @@ public class RecipeStepActivity extends AppCompatActivity {
 
     public static String ID = "item";
 
-    private static final DefaultBandwidthMeter BANDWIDTH_METER = new DefaultBandwidthMeter();
     private static final String TAG = "PlayerActivity";
 
     private PlayerView playerView;
@@ -70,6 +55,7 @@ public class RecipeStepActivity extends AppCompatActivity {
 
         TextView description_tv = findViewById(R.id.description_tv);
         playerView = findViewById(R.id.video_view);
+        View noVideoView = findViewById(R.id.no_video);
 
         step = getIntent().getParcelableExtra(ID);
 
@@ -77,16 +63,17 @@ public class RecipeStepActivity extends AppCompatActivity {
 
         if(step.getVideoURL().isEmpty()){
             playerView.setVisibility(View.GONE);
+            noVideoView.setVisibility(View.VISIBLE);
         }
 
     }
 
     private void initializePlayer(String url) {
         if (player == null) {
-            playerView.setDefaultArtwork(getBitmapFromURL(step.getThumbnailURL()));
             player = ExoPlayerFactory.newSimpleInstance(
                     new DefaultRenderersFactory(this),
                     new DefaultTrackSelector(), new DefaultLoadControl());
+            playerView.setDefaultArtwork(getBitmapFromURL(step.getThumbnailURL()));
             playerView.setPlayer(player);
             player.setPlayWhenReady(playWhenReady);
             player.seekTo(currentWindow, playbackPosition);
