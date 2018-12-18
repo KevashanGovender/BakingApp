@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import govender.kevashan.com.bakingapp.R;
 
-import govender.kevashan.com.bakingapp.viewrecipes.widget.Util;
+import govender.kevashan.com.bakingapp.viewrecipes.viewmodel.Util;
 import govender.kevashan.com.bakingapp.model.Recipe;
 import govender.kevashan.com.bakingapp.viewrecipes.database.RecipeDb;
 import govender.kevashan.com.bakingapp.viewrecipes.repo.RecipeRepo;
@@ -95,14 +95,14 @@ public class RecipeListActivity extends AppCompatActivity implements IGetRecipeV
                             .replace(R.id.recipe_detail_container, fragment)
                             .commit();
                     viewmodel.insertRecipe(mValues.get(position));
-                    Util.ID = mValues.get(position).getId();
+                    Util.writePrefferedRecipe(mParentActivity, mValues.get(position).getId());
                 } else {
                     Context context = view.getContext();
                     Intent intent = new Intent(context, RecipeDetailActivity.class);
                     intent.putExtra(RecipeDetailFragment.ARG_ITEM_ID, mValues.get(position));
 
                     viewmodel.insertRecipe(mValues.get(position));
-                    Util.ID = mValues.get(position).getId();
+                    Util.writePrefferedRecipe(mParentActivity, mValues.get(position).getId());
 
                     context.startActivity(intent);
                 }

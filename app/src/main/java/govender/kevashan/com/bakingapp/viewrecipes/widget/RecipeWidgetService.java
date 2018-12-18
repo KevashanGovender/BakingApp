@@ -6,6 +6,7 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import govender.kevashan.com.bakingapp.R;
 import govender.kevashan.com.bakingapp.model.Ingredient;
@@ -13,6 +14,7 @@ import govender.kevashan.com.bakingapp.model.Recipe;
 import govender.kevashan.com.bakingapp.viewrecipes.database.RecipeDb;
 import govender.kevashan.com.bakingapp.viewrecipes.repo.RecipeRepo;
 import govender.kevashan.com.bakingapp.viewrecipes.task.GetRecipeForWidgetTask;
+import govender.kevashan.com.bakingapp.viewrecipes.viewmodel.Util;
 
 public class RecipeWidgetService extends RemoteViewsService {
     @Override
@@ -20,7 +22,7 @@ public class RecipeWidgetService extends RemoteViewsService {
         return new RemoteRecipeIngredientsItemViewFactory(getApplicationContext());
     }
 
-    public class RemoteRecipeIngredientsItemViewFactory implements RemoteViewsService.RemoteViewsFactory, IGetRecipeForWidgetView {
+    public class RemoteRecipeIngredientsItemViewFactory implements RemoteViewsService.RemoteViewsFactory{
 
         private final RecipeRepo recipeRepo;
         private List<Ingredient> ingredients;
@@ -31,9 +33,12 @@ public class RecipeWidgetService extends RemoteViewsService {
         public RemoteRecipeIngredientsItemViewFactory(Context context) {
             this.context = context;
             recipeRepo = new RecipeRepo(RecipeDb.getInstance(context));
-            task = new GetRecipeForWidgetTask(recipeRepo, Util.ID, this);
-            task.execute();
-
+            task = new GetRecipeForWidgetTask(recipeRepo, Util.getPrefferedRecipe(context));
+            try {
+                global = task.execute().get();
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
@@ -81,11 +86,6 @@ public class RecipeWidgetService extends RemoteViewsService {
         @Override
         public boolean hasStableIds() {
             return false;
-        }
-
-        @Override
-        public void showIngredients(Recipe recipe) {
-            global = recipe;
         }
     }
 }
