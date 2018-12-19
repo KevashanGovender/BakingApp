@@ -9,8 +9,4 @@ public class RecipeTaskFactory {
     public GetRecipesTask getRecipesTask(IRecipeRepo recipeRepo, IGetRecipes view){
         return new GetRecipesTask(recipeRepo, view);
     }
-
-    public InsertRecipeTask insertRecipeTask(IRecipeRepo recipeRepo, Recipe recipe){
-        return new InsertRecipeTask(recipeRepo, recipe);
-    }
 }

@@ -1,4 +1,4 @@
-package govender.kevashan.com.bakingapp.viewrecipes.database;
+package govender.kevashan.com.bakingapp.viewrecipes.viewmodel;
 
 import android.arch.persistence.room.TypeConverter;
 

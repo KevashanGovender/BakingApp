@@ -9,10 +9,4 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <TextView
-        android:id="@+id/empty_widget"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/widget_empty_state"/>
-
 </RelativeLayout>

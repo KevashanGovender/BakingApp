@@ -23,11 +23,6 @@ public class GetRecipeViewmodel implements IGetRecipes {
         taskFactory.getRecipesTask(recipeRepo, this).execute();
     }
 
-    public void insertRecipe(Recipe recipe){
-        taskFactory.insertRecipeTask(recipeRepo, recipe).execute();
-    }
-
-
     @Override
     public void onSuccess(List<Recipe> recipes) {
         view.displayRecipes(recipes);

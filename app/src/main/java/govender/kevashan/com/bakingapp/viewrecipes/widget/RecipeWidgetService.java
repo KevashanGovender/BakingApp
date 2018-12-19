@@ -6,39 +6,24 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import govender.kevashan.com.bakingapp.R;
 import govender.kevashan.com.bakingapp.model.Ingredient;
-import govender.kevashan.com.bakingapp.model.Recipe;
-import govender.kevashan.com.bakingapp.viewrecipes.database.RecipeDb;
-import govender.kevashan.com.bakingapp.viewrecipes.repo.RecipeRepo;
-import govender.kevashan.com.bakingapp.viewrecipes.task.GetRecipeForWidgetTask;
 import govender.kevashan.com.bakingapp.viewrecipes.viewmodel.Util;
 
-public class RecipeWidgetService extends RemoteViewsService {
+public class RecipeWidgetService extends RemoteViewsService  {
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        return new RemoteRecipeIngredientsItemViewFactory(getApplicationContext());
+        return new RemoteRecipeIngredientsItemViewFactory(this.getApplicationContext());
     }
 
     public class RemoteRecipeIngredientsItemViewFactory implements RemoteViewsService.RemoteViewsFactory{
 
-        private final RecipeRepo recipeRepo;
         private List<Ingredient> ingredients;
         private Context context;
-        private GetRecipeForWidgetTask task;
-        private Recipe global;
 
         public RemoteRecipeIngredientsItemViewFactory(Context context) {
             this.context = context;
-            recipeRepo = new RecipeRepo(RecipeDb.getInstance(context));
-            task = new GetRecipeForWidgetTask(recipeRepo, Util.getPrefferedRecipe(context));
-            try {
-                global = task.execute().get();
-            } catch (ExecutionException | InterruptedException e) {
-                e.printStackTrace();
-            }
         }
 
         @Override
@@ -48,7 +33,7 @@ public class RecipeWidgetService extends RemoteViewsService {
 
         @Override
         public void onDataSetChanged() {
-            ingredients = global.getIngredients();
+            ingredients = Util.getPrefferedRecipe(context);
         }
 
         @Override
@@ -58,13 +43,14 @@ public class RecipeWidgetService extends RemoteViewsService {
 
         @Override
         public int getCount() {
-            return 0;
+            return ingredients.size();
         }
 
         @Override
         public RemoteViews getViewAt(int i) {
+            System.out.println("[wtf] getViewAt");
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_item);
-            views.setTextViewText(R.id.ingredient_item_text_view, ingredients.get(i).toString());
+            views.setTextViewText(R.id.ingredient_item_text_view, ingredients.get(i).getIngredient());
             return views;
         }
 
@@ -75,7 +61,7 @@ public class RecipeWidgetService extends RemoteViewsService {
 
         @Override
         public int getViewTypeCount() {
-            return 0;
+            return 1;
         }
 
         @Override
@@ -85,7 +71,7 @@ public class RecipeWidgetService extends RemoteViewsService {
 
         @Override
         public boolean hasStableIds() {
-            return false;
+            return true;
         }
     }
 }

@@ -9,6 +9,4 @@ import govender.kevashan.com.bakingapp.model.Recipe;
 public interface IRecipeRepo {
 
     List<Recipe> getRecipes();
-    void insertRecipe(Recipe ingredients);
-    Recipe getRecipeForWidget(int id);
 }

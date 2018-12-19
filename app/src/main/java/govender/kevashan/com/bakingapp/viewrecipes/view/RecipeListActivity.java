@@ -15,7 +15,6 @@ import govender.kevashan.com.bakingapp.R;
 
 import govender.kevashan.com.bakingapp.viewrecipes.viewmodel.Util;
 import govender.kevashan.com.bakingapp.model.Recipe;
-import govender.kevashan.com.bakingapp.viewrecipes.database.RecipeDb;
 import govender.kevashan.com.bakingapp.viewrecipes.repo.RecipeRepo;
 import govender.kevashan.com.bakingapp.viewrecipes.service.IRecipeService;
 import govender.kevashan.com.bakingapp.viewrecipes.service.RetrofitClientInstance;
@@ -28,8 +27,6 @@ public class RecipeListActivity extends AppCompatActivity implements IGetRecipeV
 
     private boolean mTwoPane;
     private RecyclerView recyclerView;
-    private RecipeRepo recipeRepo;
-    private GetRecipeViewmodel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,15 +44,15 @@ public class RecipeListActivity extends AppCompatActivity implements IGetRecipeV
         recyclerView = findViewById(R.id.recipe_list);
         assert recyclerView != null;
 
-        recipeRepo = new RecipeRepo(RetrofitClientInstance.getRetrofitInstance().create(IRecipeService.class), RecipeDb.getInstance(getApplicationContext()));
-        viewModel = new GetRecipeViewmodel(recipeRepo, new RecipeTaskFactory(), this);
+        RecipeRepo recipeRepo = new RecipeRepo(RetrofitClientInstance.getRetrofitInstance().create(IRecipeService.class));
+        GetRecipeViewmodel viewModel = new GetRecipeViewmodel(recipeRepo, new RecipeTaskFactory(), this);
 
         viewModel.getRecipes();
     }
 
     @Override
     public void displayRecipes(List<Recipe> recipes) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, recipes, mTwoPane, viewModel));
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, recipes, mTwoPane));
     }
 
     public static class SimpleItemRecyclerViewAdapter
@@ -64,15 +61,13 @@ public class RecipeListActivity extends AppCompatActivity implements IGetRecipeV
         private final RecipeListActivity mParentActivity;
         private final List<Recipe> mValues;
         private final boolean mTwoPane;
-        private GetRecipeViewmodel viewmodel;
 
         SimpleItemRecyclerViewAdapter(RecipeListActivity parent,
                                       List<Recipe> items,
-                                      boolean twoPane, GetRecipeViewmodel viewmodel) {
+                                      boolean twoPane) {
             mValues = items;
             mParentActivity = parent;
             mTwoPane = twoPane;
-            this.viewmodel = viewmodel;
         }
 
         @Override
@@ -94,16 +89,12 @@ public class RecipeListActivity extends AppCompatActivity implements IGetRecipeV
                     mParentActivity.getSupportFragmentManager().beginTransaction()
                             .replace(R.id.recipe_detail_container, fragment)
                             .commit();
-                    viewmodel.insertRecipe(mValues.get(position));
-                    Util.writePrefferedRecipe(mParentActivity, mValues.get(position).getId());
+                    Util.writePrefferedRecipe(mParentActivity, mValues.get(position));
                 } else {
                     Context context = view.getContext();
                     Intent intent = new Intent(context, RecipeDetailActivity.class);
                     intent.putExtra(RecipeDetailFragment.ARG_ITEM_ID, mValues.get(position));
-
-                    viewmodel.insertRecipe(mValues.get(position));
-                    Util.writePrefferedRecipe(mParentActivity, mValues.get(position).getId());
-
+                    Util.writePrefferedRecipe(mParentActivity, mValues.get(position));
                     context.startActivity(intent);
                 }
             });

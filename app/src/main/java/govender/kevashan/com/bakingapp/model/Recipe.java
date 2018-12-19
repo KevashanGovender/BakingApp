@@ -1,22 +1,15 @@
 package govender.kevashan.com.bakingapp.model;
 
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-@Entity(tableName = "recipe_widget")
 public class Recipe implements Parcelable {
 
-
-    @PrimaryKey
-    @NonNull
     @SerializedName("id")
     @Expose
     private Integer id;
