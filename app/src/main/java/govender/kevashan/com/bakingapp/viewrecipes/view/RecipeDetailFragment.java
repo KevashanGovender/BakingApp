@@ -24,8 +24,6 @@ public class RecipeDetailFragment extends Fragment {
     public static final String ARG_ITEM_ID = "item_id";
     private Recipe recipe;
 
-    private static final DefaultBandwidthMeter BANDWIDTH_METER = new DefaultBandwidthMeter();
-
     public RecipeDetailFragment() {
     }
 

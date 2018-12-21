@@ -42,6 +42,9 @@ public class RecipeStepActivity extends AppCompatActivity {
     private int currentWindow;
     private boolean playWhenReady = true;
 
+    private static String PLAYBACK_POSITION = "playback_position";
+    private static String CURRENT_WINDOW = "current_window";
+
     private Step step;
 
     public RecipeStepActivity() {
@@ -52,6 +55,11 @@ public class RecipeStepActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.recipe_step_fragment);
+
+        if (savedInstanceState != null) {
+            playbackPosition = savedInstanceState.getLong(PLAYBACK_POSITION, 0);
+            currentWindow = savedInstanceState.getInt(CURRENT_WINDOW, 0);
+        }
 
         TextView description_tv = findViewById(R.id.description_tv);
         playerView = findViewById(R.id.video_view);
@@ -66,6 +74,16 @@ public class RecipeStepActivity extends AppCompatActivity {
             noVideoView.setVisibility(View.VISIBLE);
         }
 
+
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if(player == null){
+            outState.putLong(PLAYBACK_POSITION, playbackPosition);
+            outState.putInt(CURRENT_WINDOW, currentWindow);
+        }
     }
 
     private void initializePlayer(String url) {
